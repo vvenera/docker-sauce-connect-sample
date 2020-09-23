@@ -1,0 +1,47 @@
+version: '3.2'
+services:
+  sauce_docker:
+    image: httpd:latest
+    container_name: sauce-connect-test
+    ports:
+      - '8084:80'
+    volumes:
+      - ./sauce-connect-test/usr/local/apache2/htdocs/
+  sauce_connect:
+    environment:
+      - SAUCE_USERNAME
+      - SAUCE_ACCESS_KEY
+      - SAUCE_REGION
+      - SAUCE_TUNNEL_IDENTIFIER
+    image: joscha/docker-sauce-connect:latest
+    restart: always
+    ports:
+      - '4445:4445'
+    command: sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -x https://eu-central-1.saucelabs.com/rest/v1 --readyfile /ready/sc --tunnel-identifier $SAUCE_TUNNEL_IDENTIFIER
+    volumes:
+      - type: bind
+        source: ready-volume
+        target: /ready
+  wdio:
+    environment:
+      - SAUCE_USERNAME
+      - SAUCE_ACCESS_KEY
+      - SAUCE_REGION
+      - SAUCE_TUNNEL_IDENTIFIER
+    tty: true
+    image: node:latest
+    ports:
+      - '4444:4444'
+    depends_on:
+      - 'sauce_connect'
+      - 'sauce_docker'
+
+    working_dir: /app
+    command: ./run_test.sh
+    volumes:
+      - .:/app
+      - type: bind
+        source: ready-volume
+        target: /ready
+volumes:
+  ready-volume:

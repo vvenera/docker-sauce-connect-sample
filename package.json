@@ -1,0 +1,23 @@
+{
+	"name": "docker-sauce-sample",
+	"version": "1.0.0",
+	"description": "wdio test with sauce-connect and docker-compose",
+	"main": "index.js",
+	"scripts": {
+		"test": "wdio wdio.conf.js"
+	},
+	"author": "venera kozueva",
+	"license": "ISC",
+	"devDependencies": {
+		"@wdio/cli": "^6.5.2",
+		"@wdio/local-runner": "^6.5.2",
+		"@wdio/mocha-framework": "^6.5.0",
+		"@wdio/spec-reporter": "^6.4.7",
+		"@wdio/sync": "^6.5.0",
+		"chromedriver": "^85.0.1",
+		"wdio-chromedriver-service": "^6.0.4"
+	},
+	"dependencies": {
+		"@wdio/sauce-service": "^6.5.0"
+	}
+}

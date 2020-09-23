@@ -1,0 +1,3 @@
+- setup .env file and provide SAUCE credentials
+- double-check the port numbers and container names for potential conflicts
+- RUN docker-compose up
